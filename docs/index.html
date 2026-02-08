@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Will you be my Valentine?</title>
+  <title>Valentine?</title>
   <style>
     body {
       display: flex;
@@ -56,13 +56,15 @@
       question.textContent = messages[noClicks % messages.length];
       noClicks++;
 
-      yesSize *= 2; // DOUBLE every time
+      yesSize *= 2;
       yesBtn.style.fontSize = yesSize + "px";
     });
 
     yesBtn.addEventListener("click", () => {
-      document.body.innerHTML =
-        "<h1>yay im so grateful for you baby :3</h1>";
+      document.body.innerHTML = `
+        <h1>yayyy thank you you're the prettiest valentine :3</h1>
+        <img src="happy.gif" alt="happy gif" style="width:300px; margin-top:20px;">
+      `;
     });
   </script>
 
