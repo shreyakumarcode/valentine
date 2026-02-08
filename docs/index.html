@@ -12,6 +12,7 @@
       height: 100vh;
       font-family: Arial, sans-serif;
       background: pink;
+      text-align: center;
     }
 
     h1 {
@@ -19,39 +20,49 @@
     }
 
     button {
-      font-size: 20px;
       padding: 10px 20px;
       margin: 10px;
       cursor: pointer;
-    }
-
-    #yesBtn {
-      font-size: 20px;
     }
   </style>
 </head>
 <body>
 
-  <h1>Will you be my Valentine? 💖</h1>
+  <h1 id="question">Will you be my Valentine</h1>
 
   <div>
-    <button id="yesBtn">Yes</button>
-    <button id="noBtn">No</button>
+    <button id="yesBtn" style="font-size: 40px;">Yes</button>
+    <button id="noBtn" style="font-size: 20px;">No</button>
   </div>
 
   <script>
     const yesBtn = document.getElementById("yesBtn");
     const noBtn = document.getElementById("noBtn");
+    const question = document.getElementById("question");
 
-    let yesSize = 20;
+    let yesSize = 40;
+    let noClicks = 0;
+
+    const messages = [
+      "whyyyy",
+      "pleaseee",
+      "this is unfairrr",
+      "i wantt youuu",
+      "i'll do anythinggg",
+      "pleaseee?"
+    ];
 
     noBtn.addEventListener("click", () => {
-      yesSize += 10;
+      question.textContent = messages[noClicks % messages.length];
+      noClicks++;
+
+      yesSize *= 2; // DOUBLE every time
       yesBtn.style.fontSize = yesSize + "px";
     });
 
     yesBtn.addEventListener("click", () => {
-      document.body.innerHTML = "<h1>YAYYY 🥰💘</h1>";
+      document.body.innerHTML =
+        "<h1>yayyy thank you you're the prettiest valentine :3</h1>";
     });
   </script>
 
