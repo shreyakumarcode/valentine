@@ -16,10 +16,26 @@
     }
 
     h1 {
-      margin-bottom: 30px;
+      margin-bottom: 20px;
     }
 
-    button {
+    #yesBtn {
+      font-size: 40px;
+      background-color: green;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 20px;
+      margin: 10px;
+      cursor: pointer;
+    }
+
+    #noBtn {
+      font-size: 20px;
+      background-color: red;
+      color: white;
+      border: none;
+      border-radius: 5px;
       padding: 10px 20px;
       margin: 10px;
       cursor: pointer;
@@ -28,11 +44,12 @@
 </head>
 <body>
 
-  <h1 id="question">Will you be my Valentine? <33" </h1>
+  <h1 id="question">Will you be my Valentineeee?</h1>
+  <img src="valentine_intro.gif" alt="Valentine GIF" style="width:250px; margin-bottom:20px;">
 
   <div>
-    <button id="yesBtn" style="font-size: 40px;">Yes</button>
-    <button id="noBtn" style="font-size: 20px;">No</button>
+    <button id="yesBtn">Yes</button>
+    <button id="noBtn">No</button>
   </div>
 
   <script>
@@ -62,7 +79,7 @@
 
     yesBtn.addEventListener("click", () => {
       document.body.innerHTML = `
-        <h1>thank youu my valentineee :3 </h1>
+        <h1>yay im so grateful honeyyy :33 </h1>
         <img src="happy.gif" alt="happy gif" style="width:300px; margin-top:20px;">
       `;
     });
