@@ -6,99 +6,144 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
+      margin: 0;
+      padding: 0;
       font-family: Arial, sans-serif;
       background: pink;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
       text-align: center;
-      padding: 10px;
-      overflow-x: hidden; /* prevents horizontal scroll when Yes grows */
+      overflow-x: hidden;
+      flex-direction: column;
     }
 
     h1 {
-      margin-bottom: 20px;
+      margin: 20px 0;
+      line-height: 1.3;
+    }
+
+    button {
+      border: none;
+      border-radius: 8px;
+      padding: 12px 24px;
+      margin: 10px 0;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      white-space: nowrap; /* prevent text wrap */
     }
 
     #yesBtn {
       font-size: 40px;
       background-color: green;
       color: white;
-      border: none;
-      border-radius: 5px;
-      padding: 10px 20px;
-      margin: 10px;
-      cursor: pointer;
-      transition: font-size 0.3s ease, transform 0.2s ease;
+      width: 60%;
+      max-width: 300px;
+      min-width: 120px;
     }
 
     #noBtn {
       font-size: 20px;
       background-color: red;
       color: white;
-      border: none;
-      border-radius: 5px;
-      padding: 10px 20px;
-      margin: 10px;
-      cursor: pointer;
-      position: relative;
+      width: 60%;
+      max-width: 300px;
+      min-width: 120px;
+    }
+
+    #openBtn {
+      font-size: 22px;
+      background-color: purple;
+      color: white;
+      width: 60%;
+      max-width: 300px;
     }
 
     p {
-      line-height: 1.4;
       font-size: 16px;
-      margin-top: 10px;
+      line-height: 1.5;
       max-width: 90%;
+      margin-top: 10px;
     }
 
-    /* Bouncing animation for intro GIF */
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-15px); }
-    }
-
-    #introGif {
-      width: 250px;
-      margin-bottom: 20px;
+    img {
+      width: 70%;
+      max-width: 300px;
+      margin: 20px 0;
       animation: bounce 1s infinite;
     }
 
-    /* Center final content */
+    @keyframes bounce {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      50% { transform: translateX(5px); }
+      75% { transform: translateX(-5px); }
+      100% { transform: translateX(0); }
+    }
+
     #finalContent {
       display: flex;
       flex-direction: column;
-      align-items: center;
       justify-content: center;
-      padding: 10px;
+      align-items: center;
+      padding: 20px;
     }
 
     #finalContent img {
-      width: 300px;
+      width: 70%;
+      max-width: 300px;
       margin-top: 20px;
+      animation: bounce 1s infinite;
     }
   </style>
 </head>
 <body>
 
-  <h1 id="question">Will you be my Valentineeee?</h1>
-  <img id="introGif" src="valentine_intro.gif" alt="Valentine GIF">
+  <!-- Opening Page -->
+  <div id="openingPage">
+    <h1>Hey babyy, I have a question for you...</h1>
+    <img id="openingGif" src="opening.gif" alt="Opening GIF">
+    <button id="openBtn">Okay...</button>
+  </div>
 
-  <div>
-    <button id="yesBtn">Yes</button>
-    <button id="noBtn">No</button>
+  <!-- Main Valentine Page -->
+  <div id="mainPage" style="display:none; flex-direction: column; align-items: center;">
+    <h1 id="question">Will you be my Valentineeee?</h1>
+    <img id="introGif" src="valentine_intro.gif" alt="Valentine GIF">
+    <div style="display:flex; flex-direction: column; align-items:center; width:100%;">
+      <button id="yesBtn">Yes</button>
+      <button id="noBtn">No</button>
+    </div>
   </div>
 
   <script>
+    // Elements
+    const openingPage = document.getElementById("openingPage");
+    const mainPage = document.getElementById("mainPage");
+    const openBtn = document.getElementById("openBtn");
+
     const yesBtn = document.getElementById("yesBtn");
     const noBtn = document.getElementById("noBtn");
     const question = document.getElementById("question");
-    const introGif = document.getElementById("introGif");
 
-    let yesSize = 40;
+    // Show main page
+    openBtn.addEventListener("click", () => {
+      openingPage.style.display = "none";
+      mainPage.style.display = "flex";
+    });
+
+    // Yes/No logic
+    let yesSize = 40; // starting font size
+    let yesWidth = 60; // starting width percentage
     let noClicks = 0;
-    const maxYesSize = 500;
+    const maxYesSize = 200; // slower growth
+    const maxYesWidth = 90; // max width percent
 
     const messages = [
       "whyyyy",
@@ -109,22 +154,25 @@
       "pleaseee?"
     ];
 
-    // Move No button randomly on each click
-    noBtn.addEventListener("mouseover", () => {
-      const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - 20);
-      const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - 20);
-      noBtn.style.position = "absolute";
-      noBtn.style.left = `${x}px`;
-      noBtn.style.top = `${y}px`;
-    });
-
     noBtn.addEventListener("click", () => {
       question.textContent = messages[noClicks % messages.length];
       noClicks++;
 
-      yesSize *= 2;
+      // Slower growth for Yes button
+      yesSize += 10; // increase font by 10px each tap
       if (yesSize > maxYesSize) yesSize = maxYesSize;
       yesBtn.style.fontSize = yesSize + "px";
+
+      // Increase button width proportionally
+      yesWidth += 5; // increase width percent
+      if (yesWidth > maxYesWidth) yesWidth = maxYesWidth;
+      yesBtn.style.width = yesWidth + "%";
+
+      // Shake animation
+      yesBtn.style.animation = "shake 0.3s";
+      yesBtn.addEventListener("animationend", () => {
+        yesBtn.style.animation = "";
+      }, { once: true });
     });
 
     yesBtn.addEventListener("click", () => {
