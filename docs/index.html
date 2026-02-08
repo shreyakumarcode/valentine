@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Valentine?</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       display: flex;
@@ -13,6 +14,8 @@
       font-family: Arial, sans-serif;
       background: pink;
       text-align: center;
+      padding: 10px;
+      overflow-x: hidden; /* prevents horizontal scroll when Yes grows */
     }
 
     h1 {
@@ -28,6 +31,7 @@
       padding: 10px 20px;
       margin: 10px;
       cursor: pointer;
+      transition: font-size 0.3s ease, transform 0.2s ease;
     }
 
     #noBtn {
@@ -39,13 +43,47 @@
       padding: 10px 20px;
       margin: 10px;
       cursor: pointer;
+      position: relative;
+    }
+
+    p {
+      line-height: 1.4;
+      font-size: 16px;
+      margin-top: 10px;
+      max-width: 90%;
+    }
+
+    /* Bouncing animation for intro GIF */
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+
+    #introGif {
+      width: 250px;
+      margin-bottom: 20px;
+      animation: bounce 1s infinite;
+    }
+
+    /* Center final content */
+    #finalContent {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+    }
+
+    #finalContent img {
+      width: 300px;
+      margin-top: 20px;
     }
   </style>
 </head>
 <body>
 
   <h1 id="question">Will you be my Valentineeee?</h1>
-  <img src="valentine_intro.gif" alt="Valentine GIF" style="width:250px; margin-bottom:20px;">
+  <img id="introGif" src="valentine_intro.gif" alt="Valentine GIF">
 
   <div>
     <button id="yesBtn">Yes</button>
@@ -56,9 +94,11 @@
     const yesBtn = document.getElementById("yesBtn");
     const noBtn = document.getElementById("noBtn");
     const question = document.getElementById("question");
+    const introGif = document.getElementById("introGif");
 
     let yesSize = 40;
     let noClicks = 0;
+    const maxYesSize = 500;
 
     const messages = [
       "whyyyy",
@@ -69,28 +109,39 @@
       "pleaseee?"
     ];
 
+    // Move No button randomly on each click
+    noBtn.addEventListener("mouseover", () => {
+      const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - 20);
+      const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - 20);
+      noBtn.style.position = "absolute";
+      noBtn.style.left = `${x}px`;
+      noBtn.style.top = `${y}px`;
+    });
+
     noBtn.addEventListener("click", () => {
       question.textContent = messages[noClicks % messages.length];
       noClicks++;
 
       yesSize *= 2;
+      if (yesSize > maxYesSize) yesSize = maxYesSize;
       yesBtn.style.fontSize = yesSize + "px";
     });
 
     yesBtn.addEventListener("click", () => {
-    document.body.innerHTML = `
-    <h1>yayyy im so grateful honeyyy :3</h1>
-    <p style="font-size:18px; margin-top:10px; max-width:400px;">
-     You mean so much to me and i am so so so happy 
-     that i get to spend valentines day with youuu. you deserve to
-     feel special and cared for and i will continue to do just that and more. 
-     im sooo excited to come see your pretty face and just be around you next weekend..
-     i hope this made you smile sweet girl and thank youuu again (for being you!)
-    </p>
-    <img src="happy.gif" alt="happy gif" style="width:300px; margin-top:20px;">
-  `;
-});
-
+      document.body.innerHTML = `
+        <div id="finalContent">
+          <h1>yayyy im so grateful honeyyy :3</h1>
+          <p>
+            You mean so much to me and I am so so so happy 
+            that I get to spend Valentine's Day with youuu. You deserve to
+            feel special and cared for, and I will continue to do just that and more. 
+            I'm sooo excited to come see your pretty face and just be around you next weekend.
+            I hope this made you smile sweet girl, and thank youuu again (for being you!)
+          </p>
+          <img src="happy.gif" alt="happy gif">
+        </div>
+      `;
+    });
   </script>
 
 </body>
